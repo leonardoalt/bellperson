@@ -39,9 +39,9 @@ impl AllocatedBit {
             || "boolean",
             || {
                 if *value.get()? {
-                    Ok(Scalar::one())
+                    Ok(Scalar::ONE)
                 } else {
-                    Ok(Scalar::zero())
+                    Ok(Scalar::ZERO)
                 }
             },
         )?;
@@ -76,9 +76,9 @@ impl AllocatedBit {
             || "boolean",
             || {
                 if *value.get()? {
-                    Ok(Scalar::one())
+                    Ok(Scalar::ONE)
                 } else {
-                    Ok(Scalar::zero())
+                    Ok(Scalar::ZERO)
                 }
             },
         )?;
@@ -113,11 +113,11 @@ impl AllocatedBit {
                 if *a.value.get()? ^ *b.value.get()? {
                     result_value = Some(true);
 
-                    Ok(Scalar::one())
+                    Ok(Scalar::ONE)
                 } else {
                     result_value = Some(false);
 
-                    Ok(Scalar::zero())
+                    Ok(Scalar::ZERO)
                 }
             },
         )?;
@@ -165,11 +165,11 @@ impl AllocatedBit {
                 if *a.value.get()? & *b.value.get()? {
                     result_value = Some(true);
 
-                    Ok(Scalar::one())
+                    Ok(Scalar::ONE)
                 } else {
                     result_value = Some(false);
 
-                    Ok(Scalar::zero())
+                    Ok(Scalar::ZERO)
                 }
             },
         )?;
@@ -203,11 +203,11 @@ impl AllocatedBit {
                 if *a.value.get()? & !*b.value.get()? {
                     result_value = Some(true);
 
-                    Ok(Scalar::one())
+                    Ok(Scalar::ONE)
                 } else {
                     result_value = Some(false);
 
-                    Ok(Scalar::zero())
+                    Ok(Scalar::ZERO)
                 }
             },
         )?;
@@ -241,11 +241,11 @@ impl AllocatedBit {
                 if !*a.value.get()? & !*b.value.get()? {
                     result_value = Some(true);
 
-                    Ok(Scalar::one())
+                    Ok(Scalar::ONE)
                 } else {
                     result_value = Some(false);
 
-                    Ok(Scalar::zero())
+                    Ok(Scalar::ZERO)
                 }
             },
         )?;
@@ -392,7 +392,7 @@ impl Boolean {
                     || "enforce equal to one",
                     |lc| lc,
                     |lc| lc,
-                    |lc| lc + CS::one() - &a.lc(CS::one(), Scalar::one()),
+                    |lc| lc + CS::one() - &a.lc(CS::one(), Scalar::ONE),
                 );
 
                 Ok(())
@@ -402,7 +402,7 @@ impl Boolean {
                     || "enforce equal to zero",
                     |lc| lc,
                     |lc| lc,
-                    |_| a.lc(CS::one(), Scalar::one()),
+                    |_| a.lc(CS::one(), Scalar::ONE),
                 );
 
                 Ok(())
@@ -412,7 +412,7 @@ impl Boolean {
                     || "enforce equal",
                     |lc| lc,
                     |lc| lc,
-                    |_| a.lc(CS::one(), Scalar::one()) - &b.lc(CS::one(), Scalar::one()),
+                    |_| a.lc(CS::one(), Scalar::ONE) - &b.lc(CS::one(), Scalar::ONE),
                 );
 
                 Ok(())
@@ -601,16 +601,16 @@ impl Boolean {
             || {
                 ch_value
                     .get()
-                    .map(|v| if *v { Scalar::one() } else { Scalar::zero() })
+                    .map(|v| if *v { Scalar::ONE } else { Scalar::ZERO })
             },
         )?;
 
         // a(b - c) = ch - c
         cs.enforce(
             || "ch computation",
-            |_| b.lc(CS::one(), Scalar::one()) - &c.lc(CS::one(), Scalar::one()),
-            |_| a.lc(CS::one(), Scalar::one()),
-            |lc| lc + ch - &c.lc(CS::one(), Scalar::one()),
+            |_| b.lc(CS::one(), Scalar::ONE) - &c.lc(CS::one(), Scalar::ONE),
+            |_| a.lc(CS::one(), Scalar::ONE),
+            |lc| lc + ch - &c.lc(CS::one(), Scalar::ONE),
         );
 
         Ok(AllocatedBit {
@@ -704,7 +704,7 @@ impl Boolean {
             || {
                 maj_value
                     .get()
-                    .map(|v| if *v { Scalar::one() } else { Scalar::zero() })
+                    .map(|v| if *v { Scalar::ONE } else { Scalar::ZERO })
             },
         )?;
 
@@ -722,12 +722,12 @@ impl Boolean {
         cs.enforce(
             || "maj computation",
             |_| {
-                bc.lc(CS::one(), Scalar::one()) + &bc.lc(CS::one(), Scalar::one())
-                    - &b.lc(CS::one(), Scalar::one())
-                    - &c.lc(CS::one(), Scalar::one())
+                bc.lc(CS::one(), Scalar::ONE) + &bc.lc(CS::one(), Scalar::ONE)
+                    - &b.lc(CS::one(), Scalar::ONE)
+                    - &c.lc(CS::one(), Scalar::ONE)
             },
-            |_| a.lc(CS::one(), Scalar::one()),
-            |_| bc.lc(CS::one(), Scalar::one()) - maj,
+            |_| a.lc(CS::one(), Scalar::ONE),
+            |_| bc.lc(CS::one(), Scalar::ONE) - maj,
         );
 
         Ok(AllocatedBit {

@@ -69,8 +69,8 @@ where
     let res_y = AllocatedNum::alloc(cs.namespace(|| "y"), || Ok(coords[*i.get()?].1))?;
 
     // Compute the coefficients for the lookup constraints
-    let mut x_coeffs = [Scalar::zero(); 8];
-    let mut y_coeffs = [Scalar::zero(); 8];
+    let mut x_coeffs = [Scalar::ZERO; 8];
+    let mut y_coeffs = [Scalar::ZERO; 8];
     synth::<Scalar, _>(3, coords.iter().map(|c| &c.0), &mut x_coeffs);
     synth::<Scalar, _>(3, coords.iter().map(|c| &c.1), &mut y_coeffs);
 
@@ -86,7 +86,7 @@ where
                 + &bits[2].lc::<Scalar>(one, x_coeffs[0b101])
                 + &precomp.lc::<Scalar>(one, x_coeffs[0b111])
         },
-        |lc| lc + &bits[0].lc::<Scalar>(one, Scalar::one()),
+        |lc| lc + &bits[0].lc::<Scalar>(one, Scalar::ONE),
         |lc| {
             lc + res_x.get_variable()
                 - (x_coeffs[0b000], one)
@@ -104,7 +104,7 @@ where
                 + &bits[2].lc::<Scalar>(one, y_coeffs[0b101])
                 + &precomp.lc::<Scalar>(one, y_coeffs[0b111])
         },
-        |lc| lc + &bits[0].lc::<Scalar>(one, Scalar::one()),
+        |lc| lc + &bits[0].lc::<Scalar>(one, Scalar::ONE),
         |lc| {
             lc + res_y.get_variable()
                 - (y_coeffs[0b000], one)
@@ -158,8 +158,8 @@ where
     let one = CS::one();
 
     // Compute the coefficients for the lookup constraints
-    let mut x_coeffs = [Scalar::zero(); 4];
-    let mut y_coeffs = [Scalar::zero(); 4];
+    let mut x_coeffs = [Scalar::ZERO; 4];
+    let mut y_coeffs = [Scalar::ZERO; 4];
     synth::<Scalar, _>(2, coords.iter().map(|c| &c.0), &mut x_coeffs);
     synth::<Scalar, _>(2, coords.iter().map(|c| &c.1), &mut y_coeffs);
 
@@ -179,7 +179,7 @@ where
     cs.enforce(
         || "y-coordinate lookup",
         |lc| lc + &y_lc + &y_lc,
-        |lc| lc + &bits[2].lc::<Scalar>(one, Scalar::one()),
+        |lc| lc + &bits[2].lc::<Scalar>(one, Scalar::ONE),
         |lc| lc + &y_lc - y.get_variable(),
     );
 
