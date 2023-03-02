@@ -25,9 +25,9 @@ pub use self::nogpu::*;
 pub use ec_gpu::GpuName;
 #[cfg(not(any(feature = "cuda", feature = "opencl")))]
 pub trait GpuName {}
-#[cfg(not(any(feature = "cuda", feature = "opencl")))]
-impl GpuName for blstrs::G1Affine {}
-#[cfg(not(any(feature = "cuda", feature = "opencl")))]
-impl GpuName for blstrs::G2Affine {}
-#[cfg(not(any(feature = "cuda", feature = "opencl")))]
-impl GpuName for blstrs::Scalar {}
+// #[cfg(not(any(feature = "cuda", feature = "opencl")))]
+// impl GpuName for blstrs::G1Affine {}
+// #[cfg(not(any(feature = "cuda", feature = "opencl")))]
+// impl GpuName for blstrs::G2Affine {}
+// #[cfg(not(any(feature = "cuda", feature = "opencl")))]
+// impl GpuName for blstrs::Scalar {}

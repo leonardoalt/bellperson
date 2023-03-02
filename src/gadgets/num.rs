@@ -151,7 +151,7 @@ impl<Scalar: PrimeField> AllocatedNum<Scalar> {
         // We want to ensure that the bit representation of a is
         // less than or equal to r - 1.
         let a = self.value.map(|e| e.to_le_bits());
-        let b = (-Scalar::one()).to_le_bits();
+        let b = (-Scalar::ONE).to_le_bits();
 
         // Get the bits of `a` in big-endian order.
         let mut a = a.as_ref().map(|e| e.into_iter().rev());
@@ -223,7 +223,7 @@ impl<Scalar: PrimeField> AllocatedNum<Scalar> {
         // However, now we have to unpack self!
 
         let mut lc = LinearCombination::zero();
-        let mut coeff = Scalar::one();
+        let mut coeff = Scalar::ONE;
 
         for bit in result.iter().rev() {
             lc = lc + (coeff, bit.get_variable());
@@ -250,7 +250,7 @@ impl<Scalar: PrimeField> AllocatedNum<Scalar> {
         let bits = boolean::field_into_allocated_bits_le(&mut cs, self.value)?;
 
         let mut lc = LinearCombination::zero();
-        let mut coeff = Scalar::one();
+        let mut coeff = Scalar::ONE;
 
         for bit in bits.iter() {
             lc = lc + (coeff, bit.get_variable());
@@ -382,7 +382,7 @@ impl<Scalar: PrimeField> AllocatedNum<Scalar> {
         cs.enforce(
             || "first conditional reversal",
             |lc| lc + a.variable - b.variable,
-            |_| condition.lc(CS::one(), Scalar::one()),
+            |_| condition.lc(CS::one(), Scalar::ONE),
             |lc| lc + a.variable - c.variable,
         );
 
@@ -397,7 +397,7 @@ impl<Scalar: PrimeField> AllocatedNum<Scalar> {
         cs.enforce(
             || "second conditional reversal",
             |lc| lc + b.variable - a.variable,
-            |_| condition.lc(CS::one(), Scalar::one()),
+            |_| condition.lc(CS::one(), Scalar::ONE),
             |lc| lc + b.variable - d.variable,
         );
 
@@ -431,7 +431,7 @@ impl<Scalar: PrimeField> From<AllocatedNum<Scalar>> for Num<Scalar> {
 impl<Scalar: PrimeField> Num<Scalar> {
     pub fn zero() -> Self {
         Num {
-            value: Some(Scalar::zero()),
+            value: Some(Scalar::ZERO),
             lc: LinearCombination::zero(),
         }
     }
